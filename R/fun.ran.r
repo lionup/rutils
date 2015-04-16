@@ -14,3 +14,17 @@ makeFootnote <- function(footnoteText=
              gp=gpar(cex= size, col=color))
    popViewport()
 }
+
+#handeling missing value using last varialbe
+imp <- function (a){
+  missing <- is.na(a)
+  anymis <- any(missing)
+  imputed <- a
+  while(anymis){
+    imputed[tail(which(missing==TRUE),1)] <- imputed[tail(which(missing==TRUE),1)+1]
+    missing <- is.na(imputed)
+    anymis <- any( missing )
+  }
+  return (imputed)
+}
+
