@@ -117,3 +117,43 @@ computeCopula <- function(rho, grid, nn) {
   }
   else { QQ <- diag(nn) }
 }
+
+# -----------------------------------
+tauchenVar <- function(n,mu,A,S,m=3){
+  n <- c(3,3)
+  mu <- c(0.1,-0.1)
+  A <- matrix(c(0.9,0.1,0,0.8), nrow=2)
+  S <- c(0.1,0.2)
+  m <- 3
+
+  K=cumprod(n)
+  M=length(n) # of variables in VAR
+  N=K[M] # of states in Markov chain
+
+  #solve X = A X A' + Q
+  vecQ  <-c(diag(S^2))
+  kronA <- kronecker(A, A)
+  matA <- diag(nrow(kronA)) - kronA 
+  vecX <- matrix(solve(matA, vecQ),nrow=2)
+  s <- m * sqrt(diag(vecX)) # std.dev. of y
+
+  z <- list()
+  for (i in 1:M){
+    z <- c( z,list(seq(-1,1,l=n[i])*s[i]) )
+  }  
+  y=expand.grid(z)
+
+  s=s/(n-1) 
+  P=1
+  for (i in 1:M){
+      y[i] = y[i] + mu[i]
+      zz <- array(z[[i]]+s[i],dim=c(n[i],N))
+      aa <- array(rep(A[i,]%*%t(y), each=n[i]),dim=c(n[i],N))
+      h = dnorm( (zz - aa) / S[i] )
+      h[n[i],]=1 
+      h=permute([h[1,];diff(h,1,1)],[3 1 2])
+      P=reshape(repmat(h,K(i)/n(i),N/K(i)),N,N).*P
+  }
+  [d,~]=eigs(P,1,1)
+  if sum(d)<0 d=-d end d(d<0)=0 d=d'/sum(d)
+}
