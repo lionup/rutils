@@ -35,7 +35,7 @@ list2df <- function(ll) {
 
 #tauchen method for AR1
 # =====================================================================
-tauchen <- function(rho,sigma,mu=0,n,m){
+tauchen <- function(rho,sigma,mu=0,n,m=3){
     N=n
     Z<- array(0, N)
     Zprob <- matrix(0, nrow=N, ncol=N)
