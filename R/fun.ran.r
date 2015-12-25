@@ -94,7 +94,10 @@ rouwenhorst <- function(rho,sigma,mu=0,n){
     for (i in 2:(n-1)){
       zeros    <- rep(0,i)
       zzeros   <- rep(0,i+1)
-      P        <- qu * rbind(cbind(P,zeros,deparse.level=0),zzeros,deparse.level=0) + (1-qu) * rbind(cbind(zeros,P,deparse.level=0),zzeros,deparse.level=0) + (1-qu) * rbind(zzeros,cbind(P,zeros,deparse.level=0),deparse.level=0) + qu * rbind(zzeros,cbind(zeros,P,deparse.level=0),deparse.level=0)
+      P        <- qu * rbind(cbind(P,zeros,deparse.level=0),zzeros,deparse.level=0) + 
+              (1-qu) * rbind(cbind(zeros,P,deparse.level=0),zzeros,deparse.level=0) + 
+              (1-qu) * rbind(zzeros,cbind(P,zeros,deparse.level=0),deparse.level=0) + 
+                  qu * rbind(zzeros,cbind(zeros,P,deparse.level=0),deparse.level=0)
       P[2:i, ] <- P[2:i, ]/2
     }
   }
