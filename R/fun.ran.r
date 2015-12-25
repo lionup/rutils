@@ -105,21 +105,20 @@ rouwenhorst <- function(rho,sigma,mu=0,n){
   return(list(Pmat=P,zgrid=zgrid))
 }
 
-
-require(copula)
 # -----------------------------------
 # Compute Transition Matrix
 # -----------------------------------
-computeCopula <- function(rho, grid, nn) {
-  if (rho < 1) {
-    norm.cop  <- normalCopula(rho)
-    vals_grid <- data.matrix( expand.grid(z1=grid, z2=grid) )   
-    vals      <- dCopula(vals_grid, norm.cop)
-    QQ        <- array( vals, dim=c(nn, nn) )
-    QQ        <- QQ / array( rowSums(QQ), dim=c(nn, nn) )
-  }
-  else { QQ <- diag(nn) }
-}
+#require(copula)
+#computeCopula <- function(rho, grid, nn) {
+#  if (rho < 1) {
+#    norm.cop  <- normalCopula(rho)
+#    vals_grid <- data.matrix( expand.grid(z1=grid, z2=grid) )   
+#    vals      <- dCopula(vals_grid, norm.cop)
+#    QQ        <- array( vals, dim=c(nn, nn) )
+#    QQ        <- QQ / array( rowSums(QQ), dim=c(nn, nn) )
+#  }
+#  else { QQ <- diag(nn) }
+#}
 
 #######################################
 ############## function:
