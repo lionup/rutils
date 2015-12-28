@@ -35,11 +35,40 @@ list2df <- function(ll) {
 
 #tauchen method for AR1
 # =====================================================================
+#tauchen <- function(rho,sigma,mu=0,n,m=3){
+#    N=n
+#    Z<- array(0, N)
+#    Zprob <- matrix(0, nrow=N, ncol=N)
+#    a     <- (1-rho)*mu
+#
+#    Z[N]  <- m * sqrt( sigma^2 / (1 - rho^2) )
+#    Z[1]  <- -Z[N];
+#    zstep <- (Z[N] - Z[1]) / (N - 1)
+#    for ( i in 2:(N-1) ){
+#        Z[i] <- Z[1] + zstep * (i - 1)
+#    }    
+#    
+#    Z <- Z + a / (1-rho)
+#
+#    for (j in 1:N){
+#        for (k in 1:N){
+#            if (k == 1) {
+#                Zprob[j,k] <-     pnorm( (Z[1] - a - rho * Z[j] + zstep / 2) / sigma )
+#            }else if(k == N){
+#                Zprob[j,k] <- 1 - pnorm( (Z[N] - a - rho * Z[j] - zstep / 2) / sigma )
+#            }else{
+#                Zprob[j,k] <- pnorm( (Z[k] - a - rho * Z[j] + zstep / 2) / sigma ) -
+#                              pnorm( (Z[k] - a - rho * Z[j] - zstep / 2) / sigma )
+#            }
+#        }
+#    }
+#    return(list(Pmat=Zprob,zgrid=Z))
+#}
+
 tauchen <- function(rho,sigma,mu=0,n,m=3){
     N=n
     Z<- array(0, N)
     Zprob <- matrix(0, nrow=N, ncol=N)
-    a     <- (1-rho)*mu
 
     Z[N]  <- m * sqrt( sigma^2 / (1 - rho^2) )
     Z[1]  <- -Z[N];
@@ -48,17 +77,17 @@ tauchen <- function(rho,sigma,mu=0,n,m=3){
         Z[i] <- Z[1] + zstep * (i - 1)
     }    
     
-    Z <- Z + a / (1-rho)
+    Z <- Z + mu / (1-rho)
 
     for (j in 1:N){
         for (k in 1:N){
             if (k == 1) {
-                Zprob[j,k] <-     pnorm( (Z[1] - a - rho * Z[j] + zstep / 2) / sigma )
+                Zprob[j,k] <-     pnorm( (Z[1] - mu - rho * Z[j] + zstep / 2) / sigma )
             }else if(k == N){
-                Zprob[j,k] <- 1 - pnorm( (Z[N] - a - rho * Z[j] - zstep / 2) / sigma )
+                Zprob[j,k] <- 1 - pnorm( (Z[N] - mu - rho * Z[j] - zstep / 2) / sigma )
             }else{
-                Zprob[j,k] <- pnorm( (Z[k] - a - rho * Z[j] + zstep / 2) / sigma ) -
-                              pnorm( (Z[k] - a - rho * Z[j] - zstep / 2) / sigma )
+                Zprob[j,k] <- pnorm( (Z[k] - mu - rho * Z[j] + zstep / 2) / sigma ) -
+                              pnorm( (Z[k] - mu - rho * Z[j] - zstep / 2) / sigma )
             }
         }
     }
